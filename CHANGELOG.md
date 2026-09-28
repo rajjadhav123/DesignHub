@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Export: a styled-components / Emotion theme token format.
 - Social: a Pinterest pin template (1000 x 1500).
 
+### Changed
+
+- Platform: add a production-only PWA service worker with versioned offline app-shell caching, runtime Google Fonts and Iconify caching, and user-controlled update handling.
 ### Performance
 
 - Typography: virtualize the font browser so only visible rows plus overscan remain in the DOM while scrolling.
