@@ -204,6 +204,10 @@ A typical design session bounces between a font site, a palette generator, a con
 | --------------------------------------------------- | ---------------------------------------------------- |
 | ![Social Media Studio](docs/screenshots/social.png) | ![Brand Guidelines](docs/screenshots/guidelines.png) |
 
+| Logo Studio                               | Brand DNA                                    | Brand Projects                                   |
+| ----------------------------------------- | -------------------------------------------- | ------------------------------------------------ |
+| ![Logo Studio](docs/screenshots/logo.png) | ![Brand DNA](docs/screenshots/brand-dna.png) | ![Brand Projects](docs/screenshots/projects.png) |
+
 | Home                               | Typography                                            |
 | ---------------------------------- | ----------------------------------------------------- |
 | ![Home](docs/screenshots/home.png) | ![Typography Studio](docs/screenshots/typography.png) |
@@ -376,7 +380,7 @@ Vercel Web Analytics is cookie-free and anonymous. It records which pages are vi
 
 Exported PNGs, PDFs and generated SVGs carry a small "Made with DesignHub" note in their file metadata (not on the artwork), and the README inside each ZIP credits the project. Your own uploaded logos are never modified.
 
-Uploaded logos and Brand DNA images are processed in the browser and never uploaded. None of these services needs an API key.
+Uploaded logos and Brand DNA images are processed in the browser and never uploaded. See [docs/storage.md](docs/storage.md) for everything DesignHub keeps in your browser and how to back it up or reset it. None of these services needs an API key.
 
 ## Roadmap
 

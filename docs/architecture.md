@@ -69,6 +69,8 @@ Each studio owns one [Zustand](https://zustand.docs.pmnd.rs) store in `store/`:
 
 Persistent stores use Zustand's `persist` middleware with `indexedDbStorage` from `lib/db.ts`, a small adapter over a [Dexie](https://dexie.org) key-value table. Hydration is asynchronous, so server-rendered HTML always matches the defaults and saved state arrives right after mount.
 
+For a user-facing list of every store and how to reset them, see [storage.md](storage.md).
+
 A second Dexie table (`icons`) caches Iconify glyph bodies, which is why icons you have opened keep working offline. A third (`projects`, schema v3) stores brand projects. Every Dexie call goes through `safeDb`, which times out and falls back to memory, so blocked storage never breaks a studio.
 
 ## Brand architecture
