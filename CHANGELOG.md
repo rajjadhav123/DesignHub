@@ -84,7 +84,7 @@ Released 2026-09-23. The first public release: a complete, local-first design an
 
 #### Brand Guidelines
 
-- A complete brand book generated from the brand: cover, introduction, logo usage, clear space, minimum size, incorrect usage, color palette, typography, iconography, UI components, accessibility, voice and tone, and a two-page design token appendix.
+- A complete brand book generated from the brand: cover, introduction, logo usage, clear space, minimum size, incorrect usage, color palette, typography, iconography, imagery, UI components, accessibility, voice and tone, social media, and a two-page design token appendix.
 - Pages can be switched off; numbering and contents update automatically. Voice and tone are edited in place.
 - Export the full book as a PDF with pdf-lib, or any page as PNG.
 

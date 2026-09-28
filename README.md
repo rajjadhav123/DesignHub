@@ -44,7 +44,7 @@ A typical design session bounces between a font site, a palette generator, a con
 | **Logo Studio**       | SVG editor, construction grid, clear space, seven variants         | SVG · PNG · PDF · logo pack ZIP                                                         |
 | **Mockup Studio**     | Stationery, poster, laptop, desktop and mobile mockups             | PNG (up to 4×) · PDF                                                                    |
 | **Social Media**      | GitHub, LinkedIn, X, Instagram, OG, Product Hunt, YouTube          | PNG (1× / 2×) · OG meta tags · social ZIP                                               |
-| **Brand Guidelines**  | A 14-page brand book generated from the brand                      | PDF · PNG per page                                                                      |
+| **Brand Guidelines**  | A 16-page brand book generated from the brand                      | PDF · PNG per page                                                                      |
 | **Brand Projects**    | Several local brands, autosaved, favorites, duplicate              | Project JSON (one or all)                                                               |
 | **Typography Studio** | Google Fonts, variable axes, pairing, fluid type scale, OpenType   | CSS · Tailwind · SCSS · React · JSON tokens                                             |
 | **Color Studio**      | Palettes, harmonies, OKLCH, shades 50–950, gradients, WCAG         | CSS variables · Tailwind · JSON tokens · SVG gradient                                   |
@@ -92,7 +92,7 @@ A typical design session bounces between a font site, a palette generator, a con
 
 ### Brand Guidelines
 
-- A complete brand book: **cover, introduction, logo usage, clear space, minimum size, incorrect usage, color palette, typography, iconography, UI components, accessibility, voice & tone and a design token appendix**
+- A complete brand book: **cover, introduction, logo usage, clear space, minimum size, incorrect usage, color palette, typography, iconography, imagery, UI components, accessibility, voice & tone, social media and a design token appendix**
 - Pages can be switched off; numbering and contents follow. Voice and tone are edited in place
 - **Export the book as a PDF** (pdf-lib) or any page as PNG
 
