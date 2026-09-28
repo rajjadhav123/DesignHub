@@ -8,7 +8,10 @@ import { DnaResultEditor } from "@/components/brand-dna/dna-result-editor";
 import { StudioLayout } from "@/components/layout/studio-layout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { Panel } from "@/components/ui/panel";
+import { Switch } from "@/components/ui/switch";
+import { isTypingTarget } from "@/hooks/use-hotkeys";
 import { applyBrandDna } from "@/lib/brand-dna/apply";
 import { ACCEPTED_IMAGES, loadDnaImage } from "@/lib/brand-dna/image";
 import { dnaProviders, getDnaProvider } from "@/lib/brand-dna/registry";
@@ -22,6 +25,8 @@ type Status = { kind: "idle" } | { kind: "running"; stage: DnaStage } | { kind: 
 export function BrandDnaWorkspace() {
   const providerId = useBrandDnaStore((state) => state.providerId);
   const setProvider = useBrandDnaStore((state) => state.setProvider);
+  const ignoreBackground = useBrandDnaStore((state) => state.ignoreBackground);
+  const setIgnoreBackground = useBrandDnaStore((state) => state.setIgnoreBackground);
   const provider = getDnaProvider(providerId);
   const [image, setImage] = useState<DnaImage | null>(null);
   const [dna, setDna] = useState<BrandDna | null>(null);
@@ -43,7 +48,7 @@ export function BrandDnaWorkspace() {
     [image],
   );
 
-  async function analyze(target: DnaImage, providerKey = providerId) {
+  async function analyze(target: DnaImage, providerKey = providerId, ignore = ignoreBackground) {
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
@@ -53,6 +58,7 @@ export function BrandDnaWorkspace() {
       const result = await getDnaProvider(providerKey).analyze(target, {
         signal: controller.signal,
         onStage: (stage) => setStatus({ kind: "running", stage }),
+        ignoreBackground: ignore,
       });
       if (controller.signal.aborted) return;
       setDna(result);
@@ -73,6 +79,25 @@ export function BrandDnaWorkspace() {
       setStatus({ kind: "error", message: error instanceof Error ? error.message : "Could not read that image." });
     }
   }
+
+  // Paste an image from the clipboard anywhere on the page (except while typing in a field).
+  const uploadRef = useRef(upload);
+  uploadRef.current = upload;
+  useEffect(() => {
+    const onPaste = (event: ClipboardEvent) => {
+      if (isTypingTarget(event.target)) return;
+      const file =
+        [...(event.clipboardData?.files ?? [])].find((item) => item.type.startsWith("image/")) ??
+        [...(event.clipboardData?.items ?? [])]
+          .find((item) => item.kind === "file" && item.type.startsWith("image/"))
+          ?.getAsFile();
+      if (!file) return;
+      event.preventDefault();
+      void uploadRef.current(file);
+    };
+    window.addEventListener("paste", onPaste);
+    return () => window.removeEventListener("paste", onPaste);
+  }, []);
 
   function apply() {
     if (!dna) return;
@@ -111,7 +136,7 @@ export function BrandDnaWorkspace() {
               )}
             >
               <ImageUp className="size-5" />
-              <span>{image ? "Replace image" : "Drop an image or click to upload"}</span>
+              <span>{image ? "Replace image" : "Drop, paste or click to upload"}</span>
               <span className="text-[11px] text-subtle-foreground">PNG, JPEG, WebP, GIF, AVIF or SVG, up to 10 MB</span>
             </button>
             <input
@@ -126,6 +151,22 @@ export function BrandDnaWorkspace() {
                 event.target.value = "";
               }}
             />
+            <div className="flex items-center justify-between gap-3">
+              <Label htmlFor="dna-ignore-background" className="flex flex-col items-start gap-0.5">
+                Ignore background
+                <span className="text-[11px] font-normal text-subtle-foreground">
+                  Leaves a flat backdrop, like the white behind a logo, out of the palette.
+                </span>
+              </Label>
+              <Switch
+                id="dna-ignore-background"
+                checked={ignoreBackground}
+                onCheckedChange={(value) => {
+                  setIgnoreBackground(value);
+                  if (image) void analyze(image, providerId, value);
+                }}
+              />
+            </div>
           </Panel>
           <Panel title="Provider">
             <div role="radiogroup" aria-label="Analysis provider" className="flex flex-col gap-1.5">

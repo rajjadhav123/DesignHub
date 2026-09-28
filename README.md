@@ -63,7 +63,7 @@ A typical design session bounces between a font site, a palette generator, a con
 
 ### Brand DNA (beta)
 
-- Upload a logo, product shot or moodboard; get a weighted palette, a mood, a type pairing, a radius and personality words
+- Upload, drop or paste a logo, product shot or moodboard; get a weighted palette, a mood, a type pairing, a radius and personality words. A flat background (like the white behind a logo) is left out automatically
 - Provider architecture: an **on-device** provider (free, private, instant) and an **AI (mock)** provider that returns sample data, both behind one `BrandDnaProvider` interface in `lib/brand-dna`. See the [provider guide](docs/brand-dna-providers.md) to add another implementation.
 - Staged loading states, editable results and one-click **Apply to brand** with undo
 

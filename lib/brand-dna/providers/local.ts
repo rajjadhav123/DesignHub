@@ -1,4 +1,4 @@
-import { extractPalette, hexOf, type WeightedColor } from "@/lib/brand-dna/palette";
+import { detectBackground, extractPalette, hexOf, type WeightedColor } from "@/lib/brand-dna/palette";
 import type { BrandDna, BrandDnaProvider, DnaColor, DnaOptions } from "@/lib/brand-dna/types";
 
 type Mood = { id: string; personality: string[]; heading: string; body: string; radius: number };
@@ -59,11 +59,14 @@ export const localProvider: BrandDnaProvider = {
   local: true,
   mocked: false,
   async analyze(image, options: DnaOptions = {}) {
-    const { signal, onStage } = options;
+    const { signal, onStage, ignoreBackground = true } = options;
     onStage?.("reading");
     await wait(120, signal);
     onStage?.("palette");
-    const palette = extractPalette(image.pixels, 6);
+    const background = ignoreBackground ? detectBackground(image.pixels, image.sampleWidth, image.sampleHeight) : null;
+    let palette = extractPalette(image.pixels, 6, { exclude: background });
+    // An image that is nothing but its background (a blank canvas) still gets a palette.
+    if (palette.length === 0 && background) palette = extractPalette(image.pixels, 6);
     if (palette.length === 0) throw new Error("The image is fully transparent.");
     await wait(160, signal);
     onStage?.("mood");
@@ -93,6 +96,7 @@ export const localProvider: BrandDnaProvider = {
       notes: [
         `${palette.length} distinct colors found in ${image.sampleWidth * image.sampleHeight} sampled pixels.`,
         `Mood reads as ${mood.id.toLowerCase()} from overall chroma and lightness.`,
+        ...(background ? [`Left out the ${hexOf(background)} background.`] : []),
       ],
     };
     onStage?.("done");

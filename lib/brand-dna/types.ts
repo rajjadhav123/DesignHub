@@ -37,7 +37,12 @@ export const dnaStages: { id: DnaStage; label: string }[] = [
   { id: "type", label: "Matching typefaces" },
 ];
 
-export type DnaOptions = { signal?: AbortSignal; onStage?: (stage: DnaStage) => void };
+export type DnaOptions = {
+  signal?: AbortSignal;
+  onStage?: (stage: DnaStage) => void;
+  /** Leave a flat background (a logo on white) out of the palette. Providers may ignore it. */
+  ignoreBackground?: boolean;
+};
 
 /**
  * A source of Brand DNA. Providers run in the browser; one backed by a model would call
