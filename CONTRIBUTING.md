@@ -36,6 +36,7 @@ The app runs at [http://localhost:3000](http://localhost:3000). There is no back
 | `pnpm start`         | Serve the production build locally                                  |
 | `pnpm lint`          | ESLint (Next.js + TypeScript rules)                                 |
 | `pnpm typecheck`     | `tsc --noEmit` in strict mode                                       |
+| `pnpm test`          | Unit tests with Vitest (`lib/**/*.test.ts`)                         |
 | `pnpm format`        | Format all files with Prettier                                      |
 | `pnpm format:check`  | Verify formatting without writing                                   |
 | `pnpm fonts:catalog` | Regenerate `lib/typography/catalog.json` from Google Fonts metadata |
@@ -44,7 +45,7 @@ The app runs at [http://localhost:3000](http://localhost:3000). There is no back
 Before pushing, run the same checks as CI:
 
 ```bash
-pnpm typecheck && pnpm lint && pnpm format:check && pnpm check:dashes && pnpm build
+pnpm typecheck && pnpm test && pnpm lint && pnpm format:check && pnpm check:dashes && pnpm build
 ```
 
 CI (`.github/workflows/ci.yml`, `lint.yml`, `typecheck.yml` and `em-dash.yml`) runs these on every push and pull request with Node 22.
@@ -130,6 +131,12 @@ docs: explain DTCG token output
 - **Never use em dashes**, in code, comments, UI copy, docs or data. Use normal punctuation instead: a comma or parentheses for an aside, a colon before an explanation, a period between two sentences, or a spaced hyphen for a label ("Acme - brand guidelines"). Ranges use a plain hyphen ("150-200ms").
 - `pnpm check:dashes` lists every em dash with its file and line, and the Em dash workflow fails the pull request if one slips in.
 - Keep UI copy short and in sentence case.
+
+### Tests
+
+- Logic in `lib/` is covered by [Vitest](https://vitest.dev). Put a `name.test.ts` file next to the module it tests and import it with the `@/` alias.
+- Test pure functions directly. Anything that needs the DOM or a canvas is better checked in the browser.
+- `pnpm test` runs once; `pnpm exec vitest` watches while you work.
 
 ### Comments
 

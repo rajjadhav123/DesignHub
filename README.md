@@ -263,6 +263,7 @@ cp .env.example .env.local
 | `pnpm start`         | Serve the production build                  |
 | `pnpm lint`          | Run ESLint                                  |
 | `pnpm typecheck`     | Run the TypeScript compiler in strict mode  |
+| `pnpm test`          | Run the unit tests (Vitest)                 |
 | `pnpm format`        | Format with Prettier                        |
 | `pnpm format:check`  | Check formatting (used in CI)               |
 | `pnpm fonts:catalog` | Regenerate the bundled Google Fonts catalog |
@@ -272,7 +273,7 @@ DesignHub builds to fully static pages, so you can deploy it to any static or No
 
 ### Continuous integration
 
-GitHub Actions run on every push and pull request with Node 22 and pnpm: `ci.yml` (install, typecheck, lint, format check, build), `lint.yml` and `typecheck.yml`. Publishing a GitHub Release runs `release.yml`, which builds the app and attaches the build as an artifact. `em-dash.yml` fails if an em dash appears anywhere in the repository (the project uses normal hyphens and punctuation). `welcome.yml` greets first-time contributors on their first issue or pull request.
+GitHub Actions run on every push and pull request with Node 22 and pnpm: `ci.yml` (install, typecheck, unit tests, lint, format check, build), `lint.yml` and `typecheck.yml`. Publishing a GitHub Release runs `release.yml`, which builds the app and attaches the build as an artifact. `em-dash.yml` fails if an em dash appears anywhere in the repository (the project uses normal hyphens and punctuation). `welcome.yml` greets first-time contributors on their first issue or pull request.
 
 ## Keyboard shortcuts
 

@@ -10,7 +10,7 @@ Next.js can rewrite this file for agents on `next dev`. That is turned off with 
 
 ## Rules
 
-- Use pnpm. Before finishing, run `pnpm typecheck && pnpm lint && pnpm format:check && pnpm check:dashes && pnpm build`.
+- Use pnpm. Before finishing, run `pnpm typecheck && pnpm test && pnpm lint && pnpm format:check && pnpm check:dashes && pnpm build`.
 - TypeScript is strict. Never use `any`.
 - Never use em dashes, in code, comments, docs or data. Use normal punctuation (a comma, colon, period or parentheses) or a spaced hyphen. `pnpm check:dashes` and the Em dash CI workflow fail on any em dash.
 - Never duplicate state. Colors live in the color store, fonts in the typography store, radius and spacing in the tokens store, and shadow in the effects store. Brand features read them through `useBrandTokens()`.

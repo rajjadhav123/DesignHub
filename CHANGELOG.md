@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Platform: add a production-only PWA service worker with versioned offline app-shell caching, runtime Google Fonts and Iconify caching, and user-controlled update handling.
+
 ### Performance
 
 - Typography: virtualize the font browser so only visible rows plus overscan remain in the DOM while scrolling.
@@ -199,6 +200,7 @@ Released 2026-09-23. The first public release: a complete, local-first design an
 - CI, lint, typecheck and release workflows on Node 22 with pnpm; releases attach a build artifact.
 - A welcome workflow that greets first-time contributors, introduces the project and points to good first issues.
 - An em dash check (`pnpm check:dashes` and the Em dash workflow) that fails if an em dash appears in any file.
+- Unit tests with Vitest (`pnpm test`, run in CI), starting with the color engine and palette import.
 - `AGENTS.md` guide for AI coding agents, with Next.js 16 notes and the project rules.
 - `.env.example` documenting the one optional variable and every external service (none need a key).
 - README, ROADMAP and CONTRIBUTING cover every studio, including the brand platform.

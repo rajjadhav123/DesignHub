@@ -24,33 +24,22 @@ function routeFromPage(file) {
   const relative = path.relative(appDir, path.dirname(file));
   const segments = relative === "" ? [] : relative.split(path.sep);
 
-  if (
-    segments.some(
-      (segment) =>
-        segment.startsWith("[") || segment.startsWith("@") || segment.startsWith("."),
-    )
-  ) {
+  if (segments.some((segment) => segment.startsWith("[") || segment.startsWith("@") || segment.startsWith("."))) {
     throw new Error("Cannot precache dynamic or parallel route: " + file);
   }
 
   return "/" + segments.filter((segment) => !/^\(.*\)$/.test(segment)).join("/");
 }
 
-const pageFiles = (await walk(appDir)).filter((file) =>
-  /(?:^|[\\/])page\.(?:js|jsx|ts|tsx)$/.test(file),
-);
+const pageFiles = (await walk(appDir)).filter((file) => /(?:^|[\\/])page\.(?:js|jsx|ts|tsx)$/.test(file));
 const routes = new Set(pageFiles.map(routeFromPage));
 routes.add("/manifest.webmanifest");
 routes.add("/robots.txt");
 routes.add("/sitemap.xml");
 routes.add("/icon.svg");
 
-const staticFiles = (await walk(staticDir)).map((file) =>
-  "/" +
-  path.posix.join(
-    "_next/static",
-    path.relative(staticDir, file).split(path.sep).join("/"),
-  ),
+const staticFiles = (await walk(staticDir)).map(
+  (file) => "/" + path.posix.join("_next/static", path.relative(staticDir, file).split(path.sep).join("/")),
 );
 const publicFiles = (await walk(publicDir))
   .filter((file) => path.basename(file) !== "sw.js")
@@ -59,11 +48,11 @@ const precache = [...new Set([...routes, ...staticFiles, ...publicFiles])].sort(
 
 const sw = [
   "const BUILD_ID = " + JSON.stringify(buildId) + ";",
-  "const STATIC_CACHE = \"designhub-static-\" + BUILD_ID;",
-  "const RUNTIME_CACHE = \"designhub-runtime-\" + BUILD_ID;",
+  'const STATIC_CACHE = "designhub-static-" + BUILD_ID;',
+  'const RUNTIME_CACHE = "designhub-runtime-" + BUILD_ID;',
   "const PRECACHE_URLS = " + JSON.stringify(precache, null, 2) + ";",
-  "const ICONIFY_HOSTS = new Set([\"api.iconify.design\", \"api.simplesvg.com\", \"api.unisvg.com\"]);",
-  "const isCacheable = (response) => response.ok || response.type === \"opaque\";",
+  'const ICONIFY_HOSTS = new Set(["api.iconify.design", "api.simplesvg.com", "api.unisvg.com"]);',
+  'const isCacheable = (response) => response.ok || response.type === "opaque";',
   "",
   "async function put(cacheName, request, response) {",
   "  if (!isCacheable(response)) return;",
@@ -95,32 +84,32 @@ const sw = [
   "  }",
   "}",
   "",
-  "self.addEventListener(\"install\", (event) => {",
+  'self.addEventListener("install", (event) => {',
   "  event.waitUntil((async () => {",
   "    const cache = await caches.open(STATIC_CACHE);",
   "    await Promise.all(PRECACHE_URLS.map(async (url) => {",
-  "      try { const response = await fetch(url, { cache: \"reload\" }); if (response.ok) await cache.put(url, response); } catch {}",
+  '      try { const response = await fetch(url, { cache: "reload" }); if (response.ok) await cache.put(url, response); } catch {}',
   "    }));",
   "  })());",
   "});",
   "",
-  "self.addEventListener(\"activate\", (event) => {",
-  "  event.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((key) => key.startsWith(\"designhub-\") && key !== STATIC_CACHE && key !== RUNTIME_CACHE).map((key) => caches.delete(key)))));",
+  'self.addEventListener("activate", (event) => {',
+  '  event.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((key) => key.startsWith("designhub-") && key !== STATIC_CACHE && key !== RUNTIME_CACHE).map((key) => caches.delete(key)))));',
   "});",
   "",
-  "self.addEventListener(\"message\", (event) => { if (event.data?.type === \"SKIP_WAITING\") self.skipWaiting(); });",
+  'self.addEventListener("message", (event) => { if (event.data?.type === "SKIP_WAITING") self.skipWaiting(); });',
   "",
-  "self.addEventListener(\"fetch\", (event) => {",
-  "  const request = event.request; if (request.method !== \"GET\") return;",
+  'self.addEventListener("fetch", (event) => {',
+  '  const request = event.request; if (request.method !== "GET") return;',
   "  const url = new URL(request.url);",
-  "  if (url.hostname === \"fonts.googleapis.com\") { event.respondWith(staleWhileRevalidate(request)); return; }",
-  "  if (url.hostname === \"fonts.gstatic.com\") { event.respondWith(cacheFirst(request)); return; }",
+  '  if (url.hostname === "fonts.googleapis.com") { event.respondWith(staleWhileRevalidate(request)); return; }',
+  '  if (url.hostname === "fonts.gstatic.com") { event.respondWith(cacheFirst(request)); return; }',
   "  if (ICONIFY_HOSTS.has(url.hostname)) { event.respondWith(networkFirst(request)); return; }",
   "  if (url.origin !== self.location.origin) return;",
-  "  if (request.mode === \"navigate\") { event.respondWith(networkFirst(request)); return; }",
-  "  if (url.pathname.startsWith(\"/_next/static/\") || PRECACHE_URLS.includes(url.pathname)) event.respondWith(cacheFirst(request));",
+  '  if (request.mode === "navigate") { event.respondWith(networkFirst(request)); return; }',
+  '  if (url.pathname.startsWith("/_next/static/") || PRECACHE_URLS.includes(url.pathname)) event.respondWith(cacheFirst(request));',
   "});",
-  ""
+  "",
 ].join("\n");
 
 await writeFile(path.join(publicDir, "sw.js"), sw);

@@ -8,8 +8,7 @@ export type PaletteImportResult = {
   dropped: number;
 };
 
-const coolorsUrlPattern =
-  /https?:\/\/(?:www\.)?coolors\.co\/(?:palette\/)?([0-9a-f]{3,6}(?:-[0-9a-f]{3,6})+)/gi;
+const coolorsUrlPattern = /https?:\/\/(?:www\.)?coolors\.co\/(?:palette\/)?([0-9a-f]{3,6}(?:-[0-9a-f]{3,6})+)/gi;
 const hexPattern = /#[0-9a-f]{3}(?![0-9a-f])|#[0-9a-f]{6}(?![0-9a-f])/gi;
 
 function collectHexes(input: string): string[] {
