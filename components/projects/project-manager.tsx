@@ -2,7 +2,7 @@
 
 import { Copy, Download, FileDown, Plus, Search, Star, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { ProjectCard } from "@/components/projects/project-card";
@@ -32,6 +32,7 @@ import { projectsToJson, projectToJson } from "@/lib/projects/transfer";
 import { projectName, type BrandProject } from "@/lib/projects/types";
 import { cn } from "@/lib/utils";
 import { useProjectStore } from "@/store/project-store";
+import { useUiStore } from "@/store/ui-store";
 
 export function ProjectManager() {
   const router = useRouter();
@@ -42,8 +43,18 @@ export function ProjectManager() {
   const [newName, setNewName] = useState("");
   const [deleting, setDeleting] = useState<BrandProject | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const newProjectRequested = useUiStore((state) => state.newProjectRequested);
+  const clearNewProjectRequest = useUiStore((state) => state.clearNewProjectRequest);
   const sort = useProjectStore((state) => state.sort);
   const setSort = useProjectStore((state) => state.setSort);
+
+  // "New brand project..." in the command palette lands here with the dialog already open.
+  useEffect(() => {
+    if (!newProjectRequested) return;
+    clearNewProjectRequest();
+    setNewName("");
+    setCreating(true);
+  }, [newProjectRequested, clearNewProjectRequest]);
 
   async function exportOne(project: BrandProject) {
     const latest = (await freshProject(project.id)) ?? project;

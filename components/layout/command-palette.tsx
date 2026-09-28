@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { BookOpen, Home, Keyboard, Moon, Sun } from "lucide-react";
 import { useRef, type ReactNode } from "react";
@@ -24,6 +25,11 @@ import { useHotkey } from "@/hooks/use-hotkeys";
 import { studios } from "@/lib/navigation";
 import { siteConfig } from "@/lib/site";
 import { useUiStore } from "@/store/ui-store";
+
+// Brand actions read projects and brand stores; load them only when the palette opens.
+const BrandCommands = dynamic(() => import("@/components/layout/brand-commands").then((m) => m.BrandCommands), {
+  ssr: false,
+});
 
 export function CommandPalette({ children }: { children?: ReactNode }) {
   const router = useRouter();
@@ -70,7 +76,7 @@ export function CommandPalette({ children }: { children?: ReactNode }) {
             <CommandEmpty>No results for “{query}”.</CommandEmpty>
             {children}
             {open ? <FontCommands query={query} onDone={() => setOpen(false)} /> : null}
-            {open ? <IconCommands query={query} onDone={() => setOpen(false)} /> : null}
+            {open ? <BrandCommands onDone={() => setOpen(false)} /> : null}
             <CommandGroup heading="Studios">
               <CommandItem value="home start" onSelect={() => run(() => router.push("/"))}>
                 <Home />
@@ -130,6 +136,9 @@ export function CommandPalette({ children }: { children?: ReactNode }) {
                 Roadmap
               </CommandItem>
             </CommandGroup>
+            {/* Last on purpose: its value always contains the whole query, and cmdk keeps groups in
+                source order, so anywhere earlier it would be picked over real matches. */}
+            {open ? <IconCommands query={query} onDone={() => setOpen(false)} /> : null}
           </CommandList>
           <footer className="flex h-10 items-center gap-4 border-t px-4 text-[11px] text-subtle-foreground">
             <span className="flex items-center gap-1">
