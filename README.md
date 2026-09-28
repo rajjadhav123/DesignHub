@@ -59,6 +59,7 @@ A typical design session bounces between a font site, a palette generator, a con
 
 - The hub of your identity: name, description, logo (upload an SVG or use the generated mark), colors with primary / secondary / neutral roles, heading and body fonts, radius, spacing and shadow
 - Synchronized tokens: the brand store keeps only what is unique to the brand and reads everything else live from Color Studio, Typography Studio, the Export Engine and the Effects Lab, so there is never a second copy
+- **Surprise me**: a new palette (locked colors stay), a curated font pairing, radius and shadow in one click, with undo
 - Live preview in light and dark with a UI kit, and a token panel with every format from the Export Engine
 
 ### Brand DNA (beta)

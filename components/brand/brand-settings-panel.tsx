@@ -5,11 +5,13 @@ import { BrandIdentityFields } from "@/components/brand/fields/brand-identity-fi
 import { BrandLogoField } from "@/components/brand/fields/brand-logo-field";
 import { BrandScaleFields } from "@/components/brand/fields/brand-scale-fields";
 import { BrandTypeFields } from "@/components/brand/fields/brand-type-fields";
+import { SurpriseButton } from "@/components/brand/surprise-button";
 import { Panel } from "@/components/ui/panel";
 
 export function BrandSettingsPanel() {
   return (
     <>
+      <SurpriseButton />
       <Panel title="Identity">
         <BrandIdentityFields />
         <BrandLogoField />
