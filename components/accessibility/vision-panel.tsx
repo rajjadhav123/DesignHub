@@ -4,6 +4,7 @@ import { useMemo } from "react";
 
 import { SwitchField } from "@/components/effects/fields";
 import { Panel } from "@/components/ui/panel";
+import { useRovingRadio } from "@/hooks/use-roving-radio";
 import { visionModes, visionSection } from "@/lib/a11y/vision";
 import { cn } from "@/lib/utils";
 import { useA11yStore } from "@/store/a11y-store";
@@ -15,6 +16,7 @@ export function VisionPanel({
   compare: boolean;
   onCompareChange: (value: boolean) => void;
 }) {
+  const radiosRef = useRovingRadio<HTMLDivElement>();
   const vision = useA11yStore((state) => state.vision);
   const setVision = useA11yStore((state) => state.setVision);
   const colors = useA11yStore((state) => state.colors);
@@ -23,7 +25,7 @@ export function VisionPanel({
   return (
     <>
       <Panel title="Color vision" description="Simulated with the Machado 2009 model.">
-        <div role="radiogroup" aria-label="Vision simulation" className="flex flex-col gap-1">
+        <div ref={radiosRef} role="radiogroup" aria-label="Vision simulation" className="flex flex-col gap-1">
           {visionModes.map((mode) => (
             <button
               key={mode.value}

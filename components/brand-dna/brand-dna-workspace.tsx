@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Panel } from "@/components/ui/panel";
 import { Switch } from "@/components/ui/switch";
 import { isTypingTarget } from "@/hooks/use-hotkeys";
+import { useRovingRadio } from "@/hooks/use-roving-radio";
 import { applyBrandDna } from "@/lib/brand-dna/apply";
 import { ACCEPTED_IMAGES, loadDnaImage } from "@/lib/brand-dna/image";
 import { dnaProviders, getDnaProvider } from "@/lib/brand-dna/registry";
@@ -28,6 +29,7 @@ export function BrandDnaWorkspace() {
   const ignoreBackground = useBrandDnaStore((state) => state.ignoreBackground);
   const setIgnoreBackground = useBrandDnaStore((state) => state.setIgnoreBackground);
   const provider = getDnaProvider(providerId);
+  const providersRef = useRovingRadio<HTMLDivElement>();
   const [image, setImage] = useState<DnaImage | null>(null);
   const [dna, setDna] = useState<BrandDna | null>(null);
   const [status, setStatus] = useState<Status>({ kind: "idle" });
@@ -169,7 +171,7 @@ export function BrandDnaWorkspace() {
             </div>
           </Panel>
           <Panel title="Provider">
-            <div role="radiogroup" aria-label="Analysis provider" className="flex flex-col gap-1.5">
+            <div ref={providersRef} role="radiogroup" aria-label="Analysis provider" className="flex flex-col gap-1.5">
               {dnaProviders.map((item) => (
                 <button
                   key={item.id}

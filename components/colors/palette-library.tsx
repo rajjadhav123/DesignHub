@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { useRovingRadio } from "@/hooks/use-roving-radio";
 import { fromHex } from "@/lib/color/color";
 import { palettePresets, paletteTags, type PaletteTag } from "@/lib/color/presets";
 import { cn } from "@/lib/utils";
@@ -10,6 +11,7 @@ import { createSwatch, useColorStore } from "@/store/color-store";
 
 /** Curated palettes to start from, filterable by mood. */
 export function PaletteLibrary() {
+  const radiosRef = useRovingRadio<HTMLDivElement>();
   const setSwatches = useColorStore((state) => state.setSwatches);
   const undo = useColorStore((state) => state.undo);
   const [tag, setTag] = useState<PaletteTag | null>(null);
@@ -23,7 +25,7 @@ export function PaletteLibrary() {
         </h2>
         <span className="text-xs text-subtle-foreground">{shown.length} palettes</span>
       </div>
-      <div role="radiogroup" aria-label="Palette mood" className="flex flex-wrap gap-1.5">
+      <div ref={radiosRef} role="radiogroup" aria-label="Palette mood" className="flex flex-wrap gap-1.5">
         {[null, ...paletteTags].map((item) => (
           <button
             key={item ?? "all"}

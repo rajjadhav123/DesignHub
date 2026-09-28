@@ -6,6 +6,7 @@ import { CollectionPicker } from "@/components/icons/collection-picker";
 import { IconGrid, IconsError } from "@/components/icons/icon-grid";
 import { IconSearch } from "@/components/icons/icon-search";
 import { Button } from "@/components/ui/button";
+import { useRovingRadio } from "@/hooks/use-roving-radio";
 import { iconSearchSuggestions, iconTopics } from "@/lib/icons/topics";
 import { cn } from "@/lib/utils";
 import { useIconResults } from "@/hooks/use-icon-results";
@@ -14,6 +15,7 @@ import { useIconStore } from "@/store/icon-store";
 const PAGE = 240;
 
 export function IconLibrary() {
+  const radiosRef = useRovingRadio<HTMLDivElement>();
   const query = useIconStore((state) => state.query);
   const setQuery = useIconStore((state) => state.setQuery);
   const prefix = useIconStore((state) => state.prefix);
@@ -44,7 +46,7 @@ export function IconLibrary() {
 
       {results.mode === "featured" ? (
         <div className="flex flex-col gap-2.5">
-          <div role="radiogroup" aria-label="Browse by topic" className="flex flex-wrap gap-1.5">
+          <div ref={radiosRef} role="radiogroup" aria-label="Browse by topic" className="flex flex-wrap gap-1.5">
             {[{ id: null, label: "Featured" }, ...iconTopics].map((item) => (
               <button
                 key={item.id ?? "featured"}

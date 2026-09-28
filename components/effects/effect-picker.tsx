@@ -1,10 +1,12 @@
 "use client";
 
+import { useRovingRadio } from "@/hooks/use-roving-radio";
 import { effectDefinitions } from "@/lib/effects/registry";
 import { cn } from "@/lib/utils";
 import { useEffectsStore } from "@/store/effects-store";
 
 export function EffectPicker() {
+  const radiosRef = useRovingRadio<HTMLDivElement>();
   const kind = useEffectsStore((state) => state.kind);
   const setKind = useEffectsStore((state) => state.setKind);
 
@@ -13,7 +15,7 @@ export function EffectPicker() {
   }
 
   return (
-    <div role="radiogroup" aria-label="Effect" className="grid grid-cols-2 gap-1.5">
+    <div ref={radiosRef} role="radiogroup" aria-label="Effect" className="grid grid-cols-2 gap-1.5">
       {effectDefinitions.map((definition) => (
         <button
           key={definition.kind}

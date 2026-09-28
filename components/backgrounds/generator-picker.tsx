@@ -1,10 +1,12 @@
 "use client";
 
+import { useRovingRadio } from "@/hooks/use-roving-radio";
 import { backgroundGenerators } from "@/lib/background/registry";
 import { cn } from "@/lib/utils";
 import { useBackgroundStore } from "@/store/background-store";
 
 export function GeneratorPicker() {
+  const radiosRef = useRovingRadio<HTMLDivElement>();
   const kind = useBackgroundStore((state) => state.settings.kind);
   const setKind = useBackgroundStore((state) => state.setKind);
 
@@ -13,7 +15,7 @@ export function GeneratorPicker() {
   }
 
   return (
-    <div role="radiogroup" aria-label="Generator" className="grid grid-cols-2 gap-1.5">
+    <div ref={radiosRef} role="radiogroup" aria-label="Generator" className="grid grid-cols-2 gap-1.5">
       {backgroundGenerators.map((generator) => (
         <button
           key={generator.kind}

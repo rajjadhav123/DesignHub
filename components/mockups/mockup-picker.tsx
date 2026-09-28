@@ -1,11 +1,13 @@
 "use client";
 
 import { useHotkey } from "@/hooks/use-hotkeys";
+import { useRovingRadio } from "@/hooks/use-roving-radio";
 import { mockupTemplates } from "@/lib/mockups/registry";
 import { cn } from "@/lib/utils";
 import { useMockupStore } from "@/store/mockup-store";
 
 export function MockupPicker() {
+  const radiosRef = useRovingRadio<HTMLDivElement>();
   const template = useMockupStore((state) => state.template);
   const setTemplate = useMockupStore((state) => state.setTemplate);
   const categories = [...new Set(mockupTemplates.map((item) => item.category))];
@@ -25,7 +27,7 @@ export function MockupPicker() {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div ref={radiosRef} className="flex flex-col gap-3">
       {categories.map((category) => (
         <div key={category} role="radiogroup" aria-label={category} className="flex flex-col gap-1.5">
           <span className="text-[11px] font-medium tracking-[0.12em] text-subtle-foreground uppercase">{category}</span>

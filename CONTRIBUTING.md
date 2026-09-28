@@ -185,7 +185,7 @@ Background generators live in `lib/background/generators/` and are pure function
 - Start from the primitives in `components/ui` (Button, Input, Panel, Select, Switch, ToggleGroup, Dialog). Add a primitive there only when two studios need it.
 - Studios use `StudioLayout` (controls, preview, output) and `SvgPreviewCanvas` for anything drawn as SVG, so zoom, backdrops and keyboard control come for free.
 - Name files after what they render (`logo-variants.tsx`), one exported component per file, props typed inline or as `type Props`.
-- Every interactive element needs a visible label or an `aria-label`; radio-style pickers use `role="radiogroup"` and `aria-checked`.
+- Every interactive element needs a visible label or an `aria-label`. Radio-style pickers use `role="radiogroup"` and `aria-checked`, and attach `useRovingRadio()` to their container so the group is one tab stop with arrow-key, Home and End navigation.
 - Keep side effects in hooks (`hooks/`), keep rendering pure, and keep heavy work (rasterizing, PDF, ZIP) behind a button with a loading state.
 
 ## Mockup and social template guidelines

@@ -7,6 +7,7 @@ import { SliderField } from "@/components/ui/field";
 import { Label } from "@/components/ui/label";
 import { Panel } from "@/components/ui/panel";
 import { Switch } from "@/components/ui/switch";
+import { useRovingRadio } from "@/hooks/use-roving-radio";
 import { toHex } from "@/lib/color/color";
 import { paletteNames } from "@/lib/color/names";
 import { generateShades, nearestStep } from "@/lib/color/shades";
@@ -14,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { useColorStore, useSelectedSwatch } from "@/store/color-store";
 
 export function ShadesStudio() {
+  const radiosRef = useRovingRadio<HTMLDivElement>();
   const swatches = useColorStore((state) => state.swatches);
   const select = useColorStore((state) => state.select);
   const options = useColorStore((state) => state.shadeOptions);
@@ -68,7 +70,7 @@ export function ShadesStudio() {
       <Panel title="Shade options">
         <div className="flex flex-col gap-2">
           <Label>Base color</Label>
-          <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Base color">
+          <div ref={radiosRef} className="flex flex-wrap gap-2" role="radiogroup" aria-label="Base color">
             {swatches.map((swatch, index) => (
               <button
                 key={swatch.id}

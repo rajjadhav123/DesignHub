@@ -4,6 +4,7 @@ import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 import { useHotkey } from "@/hooks/use-hotkeys";
+import { useRovingRadio } from "@/hooks/use-roving-radio";
 import { socialPlatforms, socialTemplates } from "@/lib/social/registry";
 import type { SocialTemplate } from "@/lib/social/types";
 import { cn } from "@/lib/utils";
@@ -30,6 +31,7 @@ const rowClass =
   "flex h-9 min-w-0 items-center justify-between gap-2 rounded-md border px-2.5 text-left text-sm text-muted-foreground transition-colors duration-150 hover:border-border-strong hover:text-foreground";
 
 export function SocialPicker() {
+  const radiosRef = useRovingRadio<HTMLDivElement>();
   const template = useSocialStore((state) => state.template);
   const setTemplate = useSocialStore((state) => state.setTemplate);
   // Groups the user folded away. A group with the selected style is open unless folded.
@@ -51,7 +53,7 @@ export function SocialPicker() {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div ref={radiosRef} className="flex flex-col gap-3">
       {platforms.map((platform) => (
         <div key={platform} role="radiogroup" aria-label={platform} className="flex flex-col gap-1.5">
           <span className="text-[11px] font-medium tracking-[0.12em] text-subtle-foreground uppercase">{platform}</span>
