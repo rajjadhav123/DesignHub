@@ -13,8 +13,8 @@ import { downloadBlob, downloadText } from "@/lib/download";
 import { withSvgCredit } from "@/lib/export/credit";
 import { rasterize } from "@/lib/export/raster";
 import { slugify } from "@/lib/logo/pack";
-import { buildSocialPack } from "@/lib/social/pack";
-import { socialTemplates } from "@/lib/social/registry";
+import { SocialPackPicker } from "@/components/social/social-pack-picker";
+import { buildSocialPack, packTemplates } from "@/lib/social/pack";
 import { readmeSnippet } from "@/lib/social/readme";
 import { ogMetaTags } from "@/lib/social/templates/open-graph";
 import type { SocialContext, SocialTemplate } from "@/lib/social/types";
@@ -32,6 +32,8 @@ export function SocialExportPanel({ svg, ctx, template }: Props) {
   const base = template ? `${slugify(ctx.brand.name)}-${template.id}` : "";
   const meta = template?.platform === "Open Graph" ? ogMetaTags(ctx, "og.png") : null;
   const credit = useSocialStore((state) => state.credit);
+  const packSelection = useSocialStore((state) => state.packSelection);
+  const packCount = packTemplates(packSelection).length;
   const setCredit = useSocialStore((state) => state.setCredit);
   const readme = template?.platform === "GitHub" ? readmeSnippet(ctx, { path: ".github/banner.png", credit }) : null;
 
@@ -66,7 +68,11 @@ export function SocialExportPanel({ svg, ctx, template }: Props) {
   async function downloadAll() {
     setPackProgress(0);
     try {
-      const zip = await buildSocialPack(ctx, (done, total) => setPackProgress(Math.round((done / total) * 100)));
+      const zip = await buildSocialPack(
+        ctx,
+        (done, total) => setPackProgress(Math.round((done / total) * 100)),
+        packSelection,
+      );
       downloadBlob(
         new Blob([zip.slice().buffer], { type: "application/zip" }),
         `${slugify(ctx.brand.name)}-social.zip`,
@@ -104,9 +110,12 @@ export function SocialExportPanel({ svg, ctx, template }: Props) {
           {spin("copy", <ClipboardCopy />)} Copy image
         </Button>
       </div>
-      <Button variant="ghost" onClick={downloadAll} disabled={packProgress !== null}>
+      <SocialPackPicker />
+      <Button variant="outline" onClick={downloadAll} disabled={packProgress !== null || packCount === 0}>
         {packProgress !== null ? <Loader2 className="animate-spin" /> : <FileArchive />}
-        {packProgress !== null ? `Rendering ${packProgress}%` : `All ${socialTemplates.length} assets (ZIP)`}
+        {packProgress !== null
+          ? `Rendering ${packProgress}%`
+          : `${packCount} ${packCount === 1 ? "asset" : "assets"} (ZIP)`}
       </Button>
       {readme ? (
         <div className="flex flex-col gap-2">

@@ -84,10 +84,10 @@ A typical design session bounces between a font site, a palette generator, a con
 ### Social Media Studio
 
 - **GitHub repository banner in 15 styles**: Minimal, Editorial, Aurora, Grid, Terminal, Glass, Gradient, Split, Bento, Spotlight, Classic, Launch, Showcase, Features and Badges
-- **LinkedIn** cover, **X** header, **Instagram** square post and story, **Open Graph** (article, product, minimal), **Product Hunt** gallery and **YouTube** thumbnail
+- **LinkedIn** profile and company page covers, **X** header, **Bluesky** banner, **Facebook** page cover, **Discord** server banner, **Instagram** square post and story, **Pinterest** pin, **Open Graph** (article, product, minimal), **Product Hunt** gallery and **YouTube** thumbnail
 - Exact platform sizes, a safe-area overlay and the zones covered by avatars and timestamps
 - One content panel drives every template: project name, description, website, GitHub username, logo, primary and secondary colors, background style, border radius and padding (empty fields follow the brand)
-- Export PNG, @1x or @2x, SVG, copy the image to the clipboard, Open Graph meta tags, and **all assets as a ZIP**
+- Export PNG, @1x or @2x, SVG, copy the image to the clipboard, Open Graph meta tags, and **a ZIP of the assets you pick** (all of them by default)
 - GitHub banners come with a **README snippet** to paste, with an optional "Banner made with DesignHub" link under the image (never on it). Add the [`made-with-designhub`](https://github.com/topics/made-with-designhub) topic to your repo to be considered for the gallery
 
 ### Brand Guidelines

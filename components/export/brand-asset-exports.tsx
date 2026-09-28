@@ -19,6 +19,7 @@ import { slugify } from "@/lib/logo/pack";
 import { useBrandStore } from "@/store/brand-store";
 import { useGuidelinesStore } from "@/store/guidelines-store";
 import { useLogoStore } from "@/store/logo-store";
+import { useSocialStore } from "@/store/social-store";
 
 type Job = "book" | "logo" | "social";
 
@@ -33,6 +34,7 @@ export function BrandAssetExports() {
   const variantCtx = useVariantContext();
   const clearSpace = useLogoStore((state) => state.clearSpace);
   const socialCtx = useSocialContext();
+  const packSelection = useSocialStore((state) => state.packSelection);
   const [job, setJob] = useState<{ id: Job; progress: number } | null>(null);
   const json = useMemo(() => brandJson(brand, voice), [brand, voice]);
   const base = slugify(brand.name);
@@ -54,7 +56,7 @@ export function BrandAssetExports() {
       }
       if (id === "social") {
         const { buildSocialPack } = await import("@/lib/social/pack");
-        const zip = await buildSocialPack(socialCtx, progress);
+        const zip = await buildSocialPack(socialCtx, progress, packSelection);
         downloadBlob(pdfBlob(zip, "application/zip"), `${base}-social.zip`);
       }
       toast.success("Download ready");
@@ -149,7 +151,12 @@ export function BrandAssetExports() {
           description="Banners, covers, posts, OG images and thumbnails at platform sizes."
           actions={
             <>
-              <Button variant="outline" size="sm" onClick={() => run("social")} disabled={job !== null}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => run("social")}
+                disabled={job !== null || packSelection?.length === 0}
+              >
                 {busy("social") ?? (
                   <>
                     <FileArchive /> ZIP

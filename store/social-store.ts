@@ -33,6 +33,8 @@ type SocialState = {
   safeArea: boolean;
   /** Add "Banner made with DesignHub" under the README snippet. */
   credit: boolean;
+  /** Templates in the ZIP pack. Null means all of them. */
+  packSelection: string[] | null;
   setTemplate: (template: string) => void;
   setMode: (mode: BrandMode) => void;
   setContent: (patch: Partial<SocialContent>) => void;
@@ -40,6 +42,7 @@ type SocialState = {
   resetDesign: () => void;
   setSafeArea: (safeArea: boolean) => void;
   setCredit: (credit: boolean) => void;
+  setPackSelection: (packSelection: string[] | null) => void;
 };
 
 export const useSocialStore = create<SocialState>()(
@@ -51,6 +54,7 @@ export const useSocialStore = create<SocialState>()(
       design: defaultSocialDesign,
       safeArea: false,
       credit: true,
+      packSelection: null,
       setTemplate: (template) => set({ template }),
       setMode: (mode) => set({ mode }),
       setContent: (patch) => set((state) => ({ content: { ...state.content, ...patch } })),
@@ -58,18 +62,20 @@ export const useSocialStore = create<SocialState>()(
       resetDesign: () => set({ design: defaultSocialDesign }),
       setSafeArea: (safeArea) => set({ safeArea }),
       setCredit: (credit) => set({ credit }),
+      setPackSelection: (packSelection) => set({ packSelection }),
     }),
     {
       name: "designhub:social",
       version: 2,
       storage: createJSONStorage(() => indexedDbStorage),
-      partialize: ({ template, mode, content, design, safeArea, credit }) => ({
+      partialize: ({ template, mode, content, design, safeArea, credit, packSelection }) => ({
         template,
         mode,
         content,
         design,
         safeArea,
         credit,
+        packSelection,
       }),
       // v1 had no design settings and fewer content fields; fill them from the defaults.
       migrate: (persisted) => persisted as SocialState,

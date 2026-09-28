@@ -34,7 +34,17 @@ export type SocialContext = DrawContext & {
 };
 
 export type SocialPlatform =
-  "GitHub" | "LinkedIn" | "X" | "Instagram" | "Open Graph" | "Product Hunt" | "YouTube" | "Pinterest";
+  | "GitHub"
+  | "LinkedIn"
+  | "X"
+  | "Instagram"
+  | "Open Graph"
+  | "Product Hunt"
+  | "YouTube"
+  | "Pinterest"
+  | "Discord"
+  | "Facebook"
+  | "Bluesky";
 
 export type SocialTemplate = {
   id: string;

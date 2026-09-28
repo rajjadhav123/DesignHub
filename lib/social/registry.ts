@@ -5,6 +5,10 @@ import { ogTemplates } from "@/lib/social/templates/open-graph";
 import { pinterestPin } from "@/lib/social/templates/pinterest";
 import { productHuntGallery, youtubeThumbnail } from "@/lib/social/templates/product-hunt";
 import { xBanner } from "@/lib/social/templates/x-banner";
+import { blueskyBanner } from "@/lib/social/templates/bluesky";
+import { facebookCover } from "@/lib/social/templates/facebook";
+import { linkedinCompanyCover } from "@/lib/social/templates/linkedin-company";
+import { discordBanner } from "@/lib/social/templates/discord";
 import type { SocialPlatform, SocialTemplate } from "@/lib/social/types";
 
 /** Templates register here as they are implemented. */
@@ -18,6 +22,10 @@ export const socialTemplates: SocialTemplate[] = [
   productHuntGallery,
   youtubeThumbnail,
   pinterestPin,
+  linkedinCompanyCover,
+  blueskyBanner,
+  facebookCover,
+  discordBanner,
 ];
 
 export const socialPlatforms: SocialPlatform[] = [
@@ -29,6 +37,9 @@ export const socialPlatforms: SocialPlatform[] = [
   "Product Hunt",
   "YouTube",
   "Pinterest",
+  "Bluesky",
+  "Facebook",
+  "Discord",
 ];
 
 /** Ids from earlier versions, so saved selections keep working. */
