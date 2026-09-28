@@ -5,6 +5,7 @@ import { confetti } from "@/lib/background/generators/confetti";
 import { hexagons } from "@/lib/background/generators/hexagons";
 import { lowPoly } from "@/lib/background/generators/low-poly";
 import { rings } from "@/lib/background/generators/rings";
+import { stripes } from "@/lib/background/generators/stripes";
 import { sunburst } from "@/lib/background/generators/sunburst";
 import { aurora } from "@/lib/background/generators/aurora";
 import { blobs } from "@/lib/background/generators/blobs";
@@ -37,6 +38,7 @@ export const backgroundGenerators: BackgroundDefinition[] = [
   hexagons,
   sunburst,
   topographic,
+  stripes,
 ];
 
 export function getGenerator(kind: BackgroundKind): BackgroundDefinition | undefined {

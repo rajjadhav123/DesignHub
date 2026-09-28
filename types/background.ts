@@ -15,7 +15,8 @@ export type BackgroundKind =
   | "chevron"
   | "hexagons"
   | "sunburst"
-  | "topographic";
+  | "topographic"
+  | "stripes";
 
 export type BackgroundSettings = {
   kind: BackgroundKind;
