@@ -31,9 +31,10 @@ export function useProjects() {
 
   /** Runs an action, then reloads the list. */
   const run = useCallback(
-    async (action: () => Promise<unknown>) => {
-      await action();
+    async <T>(action: () => Promise<T>): Promise<T> => {
+      const result = await action();
       await refresh();
+      return result;
     },
     [refresh],
   );

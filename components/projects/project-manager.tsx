@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useProjects } from "@/hooks/use-projects";
 import { downloadText } from "@/lib/download";
 import { slugify } from "@/lib/logo/pack";
@@ -21,13 +22,16 @@ import {
   openProject,
   removeProject,
   renameProject,
+  restoreProject,
   saveActiveProject,
   toggleFavorite,
 } from "@/lib/projects/actions";
 import { listProjects } from "@/lib/projects/repository";
+import { projectSorts, sortProjects, type ProjectSort } from "@/lib/projects/sort";
 import { projectsToJson, projectToJson } from "@/lib/projects/transfer";
 import { projectName, type BrandProject } from "@/lib/projects/types";
 import { cn } from "@/lib/utils";
+import { useProjectStore } from "@/store/project-store";
 
 export function ProjectManager() {
   const router = useRouter();
@@ -38,6 +42,8 @@ export function ProjectManager() {
   const [newName, setNewName] = useState("");
   const [deleting, setDeleting] = useState<BrandProject | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const sort = useProjectStore((state) => state.sort);
+  const setSort = useProjectStore((state) => state.setSort);
 
   async function exportOne(project: BrandProject) {
     const latest = (await freshProject(project.id)) ?? project;
@@ -71,13 +77,27 @@ export function ProjectManager() {
 
   const visible = useMemo(() => {
     const term = query.trim().toLowerCase();
-    return (projects ?? [])
-      .filter((project) => (!favoritesOnly || project.favorite) && projectName(project).toLowerCase().includes(term))
-      .sort(
-        (a, b) =>
-          Number(b.favorite) - Number(a.favorite) || b.lastOpenedAt - a.lastOpenedAt || b.updatedAt - a.updatedAt,
-      );
-  }, [projects, query, favoritesOnly]);
+    const matching = (projects ?? []).filter(
+      (project) => (!favoritesOnly || project.favorite) && projectName(project).toLowerCase().includes(term),
+    );
+    return sortProjects(matching, sort);
+  }, [projects, query, favoritesOnly, sort]);
+
+  async function remove(target: BrandProject) {
+    const removed = await run(() => removeProject(target.id));
+    if (!removed) return;
+    const name = projectName(removed.project);
+    toast.success(`Deleted ${name}`, {
+      duration: 8000,
+      action: {
+        label: "Undo",
+        onClick: () =>
+          void run(() => restoreProject(removed.project, removed.wasActive)).then(() =>
+            toast.success(`Restored ${name}`),
+          ),
+      },
+    });
+  }
 
   async function open(project: BrandProject) {
     await run(() => openProject(project.id));
@@ -108,6 +128,18 @@ export function ProjectManager() {
         >
           <Star className={cn(favoritesOnly && "fill-warning text-warning")} /> Favorites
         </Button>
+        <Select value={sort} onValueChange={(value) => setSort(value as ProjectSort)}>
+          <SelectTrigger size="sm" className="w-44" aria-label="Sort projects">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {projectSorts.map((item) => (
+              <SelectItem key={item.value} value={item.value}>
+                {item.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         <span className="flex-1" />
         <Button variant="outline" size="sm" onClick={() => fileRef.current?.click()}>
           <Upload /> Import
@@ -237,7 +269,9 @@ export function ProjectManager() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Delete {deleting ? projectName(deleting) : "project"}?</DialogTitle>
-            <DialogDescription>This removes it from this browser. It cannot be undone.</DialogDescription>
+            <DialogDescription>
+              This removes it from this browser. You can undo it for a few seconds afterwards.
+            </DialogDescription>
           </DialogHeader>
           <div className="flex justify-end gap-2">
             <Button variant="outline" onClick={() => setDeleting(null)}>
@@ -248,7 +282,7 @@ export function ProjectManager() {
               onClick={() => {
                 const target = deleting;
                 setDeleting(null);
-                if (target) void run(() => removeProject(target.id)).then(() => toast.success("Project deleted"));
+                if (target) void remove(target);
               }}
             >
               Delete

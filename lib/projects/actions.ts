@@ -96,17 +96,38 @@ export async function toggleFavorite(id: string): Promise<void> {
 }
 
 /** Deletes a project. Deleting the open one switches to the most recent other project. */
-export async function removeProject(id: string): Promise<void> {
+export async function removeProject(id: string): Promise<{ project: BrandProject; wasActive: boolean } | null> {
+  // Read the latest copy first (saving live edits if it is open) so undo restores everything.
+  const project = await freshProject(id);
+  if (!project) return null;
   await deleteProject(id);
   const { activeId, setActive } = useProjectStore.getState();
-  if (activeId !== id) return;
+  const wasActive = activeId === id;
+  if (!wasActive) return { project, wasActive };
   const rest = (await listProjects()).sort((a, b) => b.lastOpenedAt - a.lastOpenedAt);
   setActive(null);
   if (rest[0]) await openProject(rest[0].id);
+  return { project, wasActive };
 }
 
+/** Puts a deleted project back with the same id, reopening it if it was the open one. */
+export async function restoreProject(project: BrandProject, reopen: boolean): Promise<void> {
+  await saveProject(project);
+  if (reopen) await openProject(project.id);
+}
+
+let initializing: Promise<void> | null = null;
+
 /** On first use, the brand already in the studios becomes the first project. */
-export async function ensureInitialProject(): Promise<void> {
+export function ensureInitialProject(): Promise<void> {
+  // Mounting twice at once (React strict mode, two tabs of the manager) must not create two projects.
+  initializing ??= createInitialProject().finally(() => {
+    initializing = null;
+  });
+  return initializing;
+}
+
+async function createInitialProject(): Promise<void> {
   await ready();
   const projects = await listProjects();
   const { activeId, setActive } = useProjectStore.getState();

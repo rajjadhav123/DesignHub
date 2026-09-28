@@ -99,7 +99,7 @@ A typical design session bounces between a font site, a palette generator, a con
 ### Brand Projects
 
 - Keep several brands side by side in IndexedDB; each project is a snapshot of every brand-defining studio
-- Create, open, rename, duplicate, delete and favorite; last edited and last opened; search and a favorites filter
+- Create, open, rename, duplicate, delete (with undo) and favorite; last edited and last opened; search, a favorites filter and four sort orders
 - The open project **autosaves** while you work anywhere in the app
 - **Import and export JSON**, one project or all of them, validated and sanitized on import
 
