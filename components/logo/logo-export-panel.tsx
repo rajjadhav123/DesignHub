@@ -8,11 +8,12 @@ import { CodeBlock } from "@/components/export/code-block";
 import { Button } from "@/components/ui/button";
 import { useVariantContext } from "@/hooks/use-variant-context";
 import { downloadBlob, downloadText } from "@/lib/download";
+import { rasterize } from "@/lib/export/raster";
 import { buildFaviconZip, buildLogoPack, slugify, variantPdf, variantPng } from "@/lib/logo/pack";
 import { logoVariants, renderVariant } from "@/lib/logo/variants";
 import { useLogoStore } from "@/store/logo-store";
 
-type Job = "png" | "pdf" | "zip" | "favicon";
+type Job = "png" | "webp" | "pdf" | "zip" | "favicon";
 
 export function LogoExportPanel() {
   const ctx = useVariantContext();
@@ -31,6 +32,10 @@ export function LogoExportPanel() {
           new Blob([(await variantPng(ctx, variant.id)).slice().buffer], { type: "image/png" }),
           `${file}.png`,
         );
+      if (job === "webp") {
+        const image = await rasterize(svg, 4, 8192, "webp");
+        downloadBlob(new Blob([image.bytes.slice().buffer], { type: "image/webp" }), `${file}.webp`);
+      }
       if (job === "pdf")
         downloadBlob(
           new Blob([(await variantPdf(ctx, variant.id)).slice().buffer], { type: "application/pdf" }),
@@ -45,8 +50,8 @@ export function LogoExportPanel() {
         downloadBlob(new Blob([zip.slice().buffer], { type: "application/zip" }), `${slugify(ctx.name)}-favicon.zip`);
       }
       toast.success("Download ready");
-    } catch {
-      toast.error("Export failed in this browser.");
+    } catch (error) {
+      toast.error(error instanceof Error && error.message ? error.message : "Export failed in this browser.");
     } finally {
       setBusy(null);
     }
@@ -61,12 +66,15 @@ export function LogoExportPanel() {
         <h2 className="text-sm font-medium">Export · {variant.label}</h2>
         <p className="text-xs text-muted-foreground">Pick a variant in the Variants tab.</p>
       </div>
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         <Button variant="outline" size="sm" onClick={() => downloadText(svg, `${file}.svg`)}>
           <Download /> SVG
         </Button>
         <Button variant="outline" size="sm" onClick={() => run("png")} disabled={busy !== null}>
           {icon("png", <ImageDown />)} PNG
+        </Button>
+        <Button variant="outline" size="sm" onClick={() => run("webp")} disabled={busy !== null}>
+          {icon("webp", <ImageDown />)} WebP
         </Button>
         <Button variant="outline" size="sm" onClick={() => run("pdf")} disabled={busy !== null}>
           {icon("pdf", <FileText />)} PDF

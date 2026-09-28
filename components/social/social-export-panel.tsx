@@ -22,7 +22,7 @@ import { useSocialStore } from "@/store/social-store";
 
 type Props = { svg: string; ctx: SocialContext; template: SocialTemplate | undefined };
 
-type Job = "png" | "png1" | "png2" | "copy" | "zip";
+type Job = "png" | "png1" | "png2" | "webp" | "copy" | "zip";
 
 const pngBlob = (bytes: Uint8Array) => new Blob([bytes.slice().buffer], { type: "image/png" });
 
@@ -52,6 +52,13 @@ export function SocialExportPanel({ svg, ctx, template }: Props) {
     run(job, async () => {
       const image = await rasterize(svg, scale);
       downloadBlob(pngBlob(image.bytes), `${base}${scale > 1 ? `@${scale}x` : ""}.png`);
+      toast.success("Download ready");
+    });
+
+  const webp = () =>
+    run("webp", async () => {
+      const image = await rasterize(svg, 1, 8192, "webp");
+      downloadBlob(new Blob([image.bytes.slice().buffer], { type: "image/webp" }), `${base}.webp`);
       toast.success("Download ready");
     });
 
@@ -96,7 +103,7 @@ export function SocialExportPanel({ svg, ctx, template }: Props) {
       <Button size="lg" className="w-full" onClick={() => png(1, "png")} disabled={disabled}>
         {spin("png", <ImageDown />)} Export PNG
       </Button>
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
         <Button variant="outline" onClick={() => png(1, "png1")} disabled={disabled}>
           {spin("png1", <ImageDown />)} @1x
         </Button>
@@ -105,6 +112,9 @@ export function SocialExportPanel({ svg, ctx, template }: Props) {
         </Button>
         <Button variant="outline" onClick={() => downloadText(withSvgCredit(svg), `${base}.svg`)} disabled={disabled}>
           <FileCode /> SVG
+        </Button>
+        <Button variant="outline" onClick={webp} disabled={disabled}>
+          {spin("webp", <ImageDown />)} WebP
         </Button>
         <Button variant="outline" onClick={copyImage} disabled={disabled}>
           {spin("copy", <ClipboardCopy />)} Copy image

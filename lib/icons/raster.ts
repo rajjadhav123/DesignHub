@@ -10,12 +10,12 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
-/** Rasterizes an SVG string into a PNG (square unless `height` is given). */
+/** Rasterizes an SVG string into a PNG, JPEG or WebP (square unless `height` is given). */
 export async function svgToPngBlob(
   svg: string,
   size: number,
   height = size,
-  type: "image/png" | "image/jpeg" = "image/png",
+  type: "image/png" | "image/jpeg" | "image/webp" = "image/png",
 ): Promise<Blob> {
   const image = await loadImage(svgToDataUrl(svg));
   const canvas = document.createElement("canvas");
@@ -33,6 +33,8 @@ export async function svgToPngBlob(
   const blob = await new Promise<Blob>((resolve, reject) =>
     canvas.toBlob((result) => (result ? resolve(result) : reject(new Error("Image encoding failed"))), type, 0.92),
   );
+  // Browsers that can't encode a type silently fall back to PNG; don't save a mislabeled file.
+  if (blob.type !== type) throw new Error(`This browser can't export ${type.replace("image/", "").toUpperCase()}.`);
   if (type !== "image/png") return blob;
   // Every PNG DesignHub exports carries a "Made with DesignHub" note in its metadata.
   const credited = withPngCredit(new Uint8Array(await blob.arrayBuffer()));

@@ -20,13 +20,19 @@ type Props = { svg: string; name: string; label: string; signature?: string };
 export function MockupExportPanel({ svg, name, label, signature }: Props) {
   const scale = useMockupStore((state) => state.scale);
   const setScale = useMockupStore((state) => state.setScale);
-  const [busy, setBusy] = useState<"png" | "pdf" | null>(null);
+  const [busy, setBusy] = useState<"png" | "webp" | "pdf" | null>(null);
   const { width, height } = svgDimensions(svg);
   const file = `${slugify(name)}-${slugify(label)}`;
 
-  async function run(kind: "png" | "pdf") {
+  async function run(kind: "png" | "webp" | "pdf") {
     setBusy(kind);
     try {
+      if (kind === "webp") {
+        const image = await rasterize(svg, scale, 8192, "webp");
+        downloadBlob(new Blob([image.bytes.slice().buffer], { type: "image/webp" }), `${file}@${scale}x.webp`);
+        toast.success("Download ready");
+        return;
+      }
       const image = await rasterize(svg, scale);
       if (kind === "png")
         downloadBlob(new Blob([image.bytes.slice().buffer], { type: "image/png" }), `${file}@${scale}x.png`);
@@ -35,8 +41,8 @@ export function MockupExportPanel({ svg, name, label, signature }: Props) {
         downloadBlob(new Blob([pdf.slice().buffer], { type: "application/pdf" }), `${file}.pdf`);
       }
       toast.success("Download ready");
-    } catch {
-      toast.error("Export failed in this browser.");
+    } catch (error) {
+      toast.error(error instanceof Error && error.message ? error.message : "Export failed in this browser.");
     } finally {
       setBusy(null);
     }
@@ -84,9 +90,12 @@ export function MockupExportPanel({ svg, name, label, signature }: Props) {
           {Math.round(width * scale)} × {Math.round(height * scale)} px
         </p>
       </div>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-3 gap-2">
         <Button onClick={() => run("png")} disabled={!svg || busy !== null}>
           {busy === "png" ? <Loader2 className="animate-spin" /> : <ImageDown />} PNG
+        </Button>
+        <Button variant="outline" onClick={() => run("webp")} disabled={!svg || busy !== null}>
+          {busy === "webp" ? <Loader2 className="animate-spin" /> : <ImageDown />} WebP
         </Button>
         <Button variant="outline" onClick={() => run("pdf")} disabled={!svg || busy !== null}>
           {busy === "pdf" ? <Loader2 className="animate-spin" /> : <FileText />} PDF

@@ -24,6 +24,7 @@ export async function imagesToPdf(pages: PdfPage[], meta: PdfMeta): Promise<Uint
   if (meta.keywords) pdf.setKeywords(meta.keywords);
   const scale = meta.scale ?? 2;
   for (const page of pages) {
+    if (page.image.format === "webp") throw new Error("PDF pages must be PNG or JPEG.");
     const png =
       page.image.format === "jpeg" ? await pdf.embedJpg(page.image.bytes) : await pdf.embedPng(page.image.bytes);
     // CSS px → PDF pt (1px = 0.75pt), undoing the rasterization factor.

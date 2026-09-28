@@ -72,6 +72,7 @@ A typical design session bounces between a font site, a palette generator, a con
 - SVG logo editor: recolor every color, monochrome and inverted modes
 - **Construction grid, clear space and safe area** guides
 - Responsive variants: full color, monochrome, inverted, horizontal and stacked lockups, wordmark and app icon, with a minimum-size strip and background tests
+- Each variant as SVG, PNG, WebP or PDF
 - **Logo pack**: every variant as SVG, PNG and PDF in one ZIP with usage notes
 
 ### Mockup Studio
@@ -79,7 +80,7 @@ A typical design session bounces between a font site, a palette generator, a con
 - Print: **business card, letterhead, envelope, stickers, poster, merch (T-shirt and tote) and an ID badge on a lanyard**
 - Screens: **landing page on a laptop, analytics dashboard on a desktop, three-screen mobile app and an email signature**, which also copies as an HTML signature for Gmail, Outlook or Apple Mail
 - Drawn as SVG from the live brand, in light or dark, with your fonts embedded so exports match the preview
-- High-resolution **PNG (1-4×) and PDF**
+- High-resolution **PNG and WebP (1-4×) and PDF**
 
 ### Social Media Studio
 
@@ -87,7 +88,7 @@ A typical design session bounces between a font site, a palette generator, a con
 - **LinkedIn** profile and company page covers, **X** header, **Bluesky** banner, **Facebook** page cover, **Discord** server banner, **Instagram** square post and story, **Pinterest** pin, **Open Graph** (article, product, minimal), **Product Hunt** gallery and **YouTube** thumbnail
 - Exact platform sizes, a safe-area overlay and the zones covered by avatars and timestamps
 - One content panel drives every template: project name, description, website, GitHub username, logo, primary and secondary colors, background style, border radius and padding (empty fields follow the brand)
-- Export PNG, @1x or @2x, SVG, copy the image to the clipboard, Open Graph meta tags, and **a ZIP of the assets you pick** (all of them by default)
+- Export PNG, @1x or @2x, WebP, SVG, copy the image to the clipboard, Open Graph meta tags, and **a ZIP of the assets you pick** (all of them by default)
 - GitHub banners come with a **README snippet** to paste, with an optional "Banner made with DesignHub" link under the image (never on it). Add the [`made-with-designhub`](https://github.com/topics/made-with-designhub) topic to your repo to be considered for the gallery
 
 ### Brand Guidelines
