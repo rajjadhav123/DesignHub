@@ -1,6 +1,8 @@
 import { businessCard } from "@/lib/mockups/templates/business-card";
 import { desktopDashboard } from "@/lib/mockups/templates/desktop-dashboard";
+import { emailSignature } from "@/lib/mockups/templates/email-signature";
 import { envelope } from "@/lib/mockups/templates/envelope";
+import { idBadge } from "@/lib/mockups/templates/id-badge";
 import { letterhead } from "@/lib/mockups/templates/letterhead";
 import { laptopLanding } from "@/lib/mockups/templates/laptop-landing";
 import { merch } from "@/lib/mockups/templates/merch";
@@ -17,9 +19,11 @@ export const mockupTemplates: MockupTemplate[] = [
   sticker,
   poster,
   merch,
+  idBadge,
   laptopLanding,
   desktopDashboard,
   mobileApp,
+  emailSignature,
 ];
 
 export function getTemplate(id: string): MockupTemplate | undefined {

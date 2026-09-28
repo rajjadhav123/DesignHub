@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, ImageDown, Loader2 } from "lucide-react";
+import { ClipboardCopy, FileText, ImageDown, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -14,9 +14,10 @@ import { slugify } from "@/lib/logo/pack";
 import { svgDimensions } from "@/lib/svg-size";
 import { useMockupStore } from "@/store/mockup-store";
 
-type Props = { svg: string; name: string; label: string };
+/** `signature` is set for the email signature mockup: the HTML version to paste into a mail client. */
+type Props = { svg: string; name: string; label: string; signature?: string };
 
-export function MockupExportPanel({ svg, name, label }: Props) {
+export function MockupExportPanel({ svg, name, label, signature }: Props) {
   const scale = useMockupStore((state) => state.scale);
   const setScale = useMockupStore((state) => state.setScale);
   const [busy, setBusy] = useState<"png" | "pdf" | null>(null);
@@ -38,6 +39,26 @@ export function MockupExportPanel({ svg, name, label }: Props) {
       toast.error("Export failed in this browser.");
     } finally {
       setBusy(null);
+    }
+  }
+
+  async function copySignature() {
+    if (!signature) return;
+    try {
+      // Rich HTML pastes as a formatted signature; plain text is the fallback for editors that want code.
+      if (typeof ClipboardItem !== "undefined" && navigator.clipboard?.write) {
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            "text/html": new Blob([signature], { type: "text/html" }),
+            "text/plain": new Blob([signature], { type: "text/plain" }),
+          }),
+        ]);
+      } else {
+        await navigator.clipboard.writeText(signature);
+      }
+      toast.success("Signature copied", { description: "Paste it into your mail client's signature settings." });
+    } catch {
+      toast.error("Couldn't copy in this browser.");
     }
   }
 
@@ -71,6 +92,18 @@ export function MockupExportPanel({ svg, name, label }: Props) {
           {busy === "pdf" ? <Loader2 className="animate-spin" /> : <FileText />} PDF
         </Button>
       </div>
+      {signature ? (
+        <div className="flex flex-col gap-2 border-t pt-4">
+          <Label>HTML signature</Label>
+          <Button variant="outline" onClick={copySignature}>
+            <ClipboardCopy /> Copy HTML signature
+          </Button>
+          <p className="text-[11px] text-subtle-foreground">
+            Uses your name, title, phone, website, email and address from Content. Paste it into Gmail (Settings,
+            Signature), Outlook or Apple Mail. Text only, so no client blocks it.
+          </p>
+        </div>
+      ) : null}
     </>
   );
 }

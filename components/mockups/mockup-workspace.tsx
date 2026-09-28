@@ -10,6 +10,7 @@ import { MockupPicker } from "@/components/mockups/mockup-picker";
 import { Panel } from "@/components/ui/panel";
 import { useMockupContext } from "@/hooks/use-mockup-context";
 import { getTemplate, mockupTemplates } from "@/lib/mockups/registry";
+import { signatureHtml } from "@/lib/mockups/signature";
 import { useMockupStore } from "@/store/mockup-store";
 
 export function MockupWorkspace() {
@@ -38,7 +39,14 @@ export function MockupWorkspace() {
           </div>
         )
       }
-      output={<MockupExportPanel svg={svg} name={ctx.brand.name} label={template?.label ?? "mockup"} />}
+      output={
+        <MockupExportPanel
+          svg={svg}
+          name={ctx.brand.name}
+          label={template?.label ?? "mockup"}
+          signature={template?.id === "email-signature" ? signatureHtml(ctx) : undefined}
+        />
+      }
     />
   );
 }
