@@ -1,4 +1,5 @@
 import {
+  contrastAPCA,
   OKLCH,
   contrastWCAG21,
   deltaEOK,
@@ -102,6 +103,14 @@ export function inGamut(value: Oklch, space: "srgb" | "p3" = "srgb"): boolean {
 /** WCAG 2.1 contrast ratio between two colors (1–21). */
 export function contrastRatio(a: Oklch, b: Oklch): number {
   return contrastWCAG21(toSrgbGamut(a), toSrgbGamut(b));
+}
+
+/**
+ * APCA lightness contrast (Lc) of text on a background, the method proposed for WCAG 3.
+ * It is signed: positive for dark text on a light background, negative for light on dark.
+ */
+export function apcaContrast(text: Oklch, background: Oklch): number {
+  return contrastAPCA(toSrgbGamut(background), toSrgbGamut(text));
 }
 
 /** Relative luminance-based pick between black and white text. */

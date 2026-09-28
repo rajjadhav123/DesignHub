@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
 
 import {
+  apcaContrast,
   colorDistance,
   contrastRatio,
   formatColor,
@@ -113,5 +114,18 @@ describe("conversions", () => {
     const a = fromHex("#6366f1");
     expect(colorDistance(a, a)).toBe(0);
     expect(colorDistance(a, fromHex("#ffffff"))).toBeGreaterThan(colorDistance(a, fromHex("#6d70f5")));
+  });
+});
+
+describe("APCA", () => {
+  // Reference values from the APCA 0.0.98G calculator (apcacontrast.com).
+  test.each([
+    ["#000000", "#ffffff", 106.04],
+    ["#ffffff", "#000000", -107.88],
+    ["#888888", "#ffffff", 63.06],
+    ["#ffffff", "#888888", -68.54],
+    ["#112233", "#ddeeff", 91.67],
+  ])("%s text on %s is Lc %d", (text, background, lc) => {
+    expect(apcaContrast(fromHex(text), fromHex(background))).toBeCloseTo(lc, 1);
   });
 });

@@ -16,7 +16,10 @@ export function ContrastResults() {
   const pairs = useMemo(() => contrastPairs(colors), [colors]);
 
   return (
-    <Panel title="WCAG contrast" description="WCAG 2.1 · 1.4.3 (AA), 1.4.6 (AAA), 1.4.11 (non-text).">
+    <Panel
+      title="WCAG contrast"
+      description="WCAG 2.1 · 1.4.3 (AA), 1.4.6 (AAA), 1.4.11 (non-text). APCA readouts are the WCAG 3 draft method and don't affect pass or fail."
+    >
       <ul className="flex flex-col gap-2" aria-label="Contrast checks">
         {pairs.map((item) => {
           const pass = item.ratio >= item.required;
@@ -41,6 +44,12 @@ export function ContrastResults() {
                   <span className="font-mono text-xs text-muted-foreground">
                     {item.ratioLabel} · needs {item.required}:1
                   </span>
+                  <span
+                    className="font-mono text-xs text-muted-foreground"
+                    title="APCA (Accessible Perceptual Contrast Algorithm) is the draft method for WCAG 3. Lc is positive for dark text on a light background and negative for light on dark; the size of the number is what matters."
+                  >
+                    APCA Lc {item.apca.toFixed(1)} · needs {item.apcaTarget}
+                  </span>
                 </div>
                 {pass ? (
                   <Check className="size-4 text-success" aria-label="Pass" />
@@ -48,22 +57,26 @@ export function ContrastResults() {
                   <X className="size-4 text-destructive" aria-label="Fail" />
                 )}
               </div>
-              {item.required === 4.5 ? (
-                <div className="flex flex-wrap gap-1">
-                  {(
-                    [
-                      ["AA", item.aa],
-                      ["AA large", item.aaLarge],
-                      ["AAA", item.aaa],
-                      ["AAA large", item.aaaLarge],
-                    ] as const
-                  ).map(([label, ok]) => (
-                    <Badge key={label} variant={ok ? "success" : "destructive"}>
-                      {label}
-                    </Badge>
-                  ))}
-                </div>
-              ) : null}
+              <div className="flex flex-wrap gap-1">
+                {item.required === 4.5
+                  ? (
+                      [
+                        ["AA", item.aa],
+                        ["AA large", item.aaLarge],
+                        ["AAA", item.aaa],
+                        ["AAA large", item.aaaLarge],
+                      ] as const
+                    ).map(([label, ok]) => (
+                      <Badge key={label} variant={ok ? "success" : "destructive"}>
+                        {label}
+                      </Badge>
+                    ))
+                  : null}
+                {/* Advisory only: APCA is a draft, so it never changes the WCAG 2 verdict. */}
+                <Badge variant={Math.abs(item.apca) >= item.apcaTarget ? "success" : "warning"}>
+                  {Math.abs(item.apca) >= item.apcaTarget ? "APCA ok" : "APCA low"}
+                </Badge>
+              </div>
               {!pass && item.suggestion ? (
                 <Button
                   variant="outline"
