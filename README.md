@@ -37,23 +37,23 @@ A typical design session bounces between a font site, a palette generator, a con
 
 ## Features
 
-| Studio                | What it does                                                       | Exports                                                     |
-| --------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------- |
-| **Brand Studio**      | Name, logo, colors with roles, type, radius, spacing, shadow       | Brand JSON · design tokens                                  |
-| **Brand DNA** (beta)  | Palette, mood, type and personality from any image, on-device      | Applies to the brand                                        |
-| **Logo Studio**       | SVG editor, construction grid, clear space, seven variants         | SVG · PNG · PDF · logo pack ZIP                             |
-| **Mockup Studio**     | Stationery, poster, laptop, desktop and mobile mockups             | PNG (up to 4×) · PDF                                        |
-| **Social Media**      | GitHub, LinkedIn, X, Instagram, OG, Product Hunt, YouTube          | PNG (1× / 2×) · OG meta tags · social ZIP                   |
-| **Brand Guidelines**  | A 14-page brand book generated from the brand                      | PDF · PNG per page                                          |
-| **Brand Projects**    | Several local brands, autosaved, favorites, duplicate              | Project JSON (one or all)                                   |
-| **Typography Studio** | Google Fonts, variable axes, pairing, fluid type scale, OpenType   | CSS · Tailwind · SCSS · React · JSON tokens                 |
-| **Color Studio**      | Palettes, harmonies, OKLCH, shades 50–950, gradients, WCAG         | CSS variables · Tailwind · JSON tokens · SVG gradient       |
-| **Icon Studio**       | 200,000+ Iconify icons, restyling, favicons                        | SVG · React · CSS · PNG · ICO · favicon ZIP                 |
-| **Background Studio** | 16 generators: waves, mesh, aurora, low poly, bokeh, sunburst…     | SVG · PNG (1× / 2×) · CSS background                        |
-| **Effects Lab**       | Glass, neumorphism, layered shadows, glow, gradient borders, grain | CSS · Tailwind classes · Tailwind `@utility` · SCSS · React |
-| **SVG Playground**    | Inspect, edit, optimize, convert, build sprites                    | Optimized SVG · JSX · React · React Native · sprite         |
-| **Accessibility Lab** | WCAG contrast, color vision, readability, dyslexia, touch targets  | JSON audit report                                           |
-| **Export Engine**     | One token model from every studio, plus brand assets               | CSS · SCSS · Less · Tailwind · React · Vue · Android · JSON |
+| Studio                | What it does                                                       | Exports                                                                                 |
+| --------------------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
+| **Brand Studio**      | Name, logo, colors with roles, type, radius, spacing, shadow       | Brand JSON · design tokens                                                              |
+| **Brand DNA** (beta)  | Palette, mood, type and personality from any image, on-device      | Applies to the brand                                                                    |
+| **Logo Studio**       | SVG editor, construction grid, clear space, seven variants         | SVG · PNG · PDF · logo pack ZIP                                                         |
+| **Mockup Studio**     | Stationery, poster, laptop, desktop and mobile mockups             | PNG (up to 4×) · PDF                                                                    |
+| **Social Media**      | GitHub, LinkedIn, X, Instagram, OG, Product Hunt, YouTube          | PNG (1× / 2×) · OG meta tags · social ZIP                                               |
+| **Brand Guidelines**  | A 14-page brand book generated from the brand                      | PDF · PNG per page                                                                      |
+| **Brand Projects**    | Several local brands, autosaved, favorites, duplicate              | Project JSON (one or all)                                                               |
+| **Typography Studio** | Google Fonts, variable axes, pairing, fluid type scale, OpenType   | CSS · Tailwind · SCSS · React · JSON tokens                                             |
+| **Color Studio**      | Palettes, harmonies, OKLCH, shades 50–950, gradients, WCAG         | CSS variables · Tailwind · JSON tokens · SVG gradient                                   |
+| **Icon Studio**       | 200,000+ Iconify icons, restyling, favicons                        | SVG · React · CSS · PNG · ICO · favicon ZIP                                             |
+| **Background Studio** | 16 generators: waves, mesh, aurora, low poly, bokeh, sunburst…     | SVG · PNG (1× / 2×) · CSS background                                                    |
+| **Effects Lab**       | Glass, neumorphism, layered shadows, glow, gradient borders, grain | CSS · Tailwind classes · Tailwind `@utility` · SCSS · React                             |
+| **SVG Playground**    | Inspect, edit, optimize, convert, build sprites                    | Optimized SVG · JSX · React · React Native · sprite                                     |
+| **Accessibility Lab** | WCAG contrast, color vision, readability, dyslexia, touch targets  | JSON audit report                                                                       |
+| **Export Engine**     | One token model from every studio, plus brand assets               | CSS · SCSS · Less · Tailwind · React · Vue · Flutter · SwiftUI · Android · JSON · Figma |
 
 ### Brand Studio
 
@@ -142,7 +142,7 @@ A typical design session bounces between a font site, a palette generator, a con
 ### Export Engine
 
 - One shared design-token model built live from every studio
-- Generates **CSS variables, SCSS, Less, Tailwind v4 `@theme`, Tailwind v3 config, React theme, Vue theme, Android `colors.xml` and JSON tokens** (W3C DTCG format)
+- Generates **CSS variables, SCSS, Less, Tailwind v4 `@theme`, Tailwind v3 config, React theme, styled-components / Emotion theme, Vue theme, Flutter `ThemeData`, SwiftUI, Android `colors.xml`, JSON tokens** (W3C DTCG format) and **Tokens Studio for Figma** JSON
 - Semantic roles (primary, accent, foreground, background) inferred from your palette
 - 8px spacing scale and 12px radius scale, both configurable
 - Live preview UI kit, one-click copy, **Download JSON**, all formats as `.zip`, preview PNG and a PDF style guide

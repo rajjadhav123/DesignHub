@@ -20,17 +20,20 @@ Each group can be switched off in the Export Engine settings. You can also set a
 
 ## Formats
 
-| Format        | File                 | Notes                                                                                                         |
-| ------------- | -------------------- | ------------------------------------------------------------------------------------------------------------- |
-| CSS variables | `tokens.css`         | `:root` custom properties. Semantic colors reference palette variables with a fallback value.                 |
-| SCSS          | `_tokens.scss`       | Variables plus `$colors`, `$type-scale`, `$spacing` and `$radii` maps.                                        |
-| Less          | `tokens.less`        | `@` variables. Values with functions are escaped (`~"..."`) so Less passes them through unchanged.            |
-| Tailwind v4   | `theme.css`          | A `@theme` block. Names follow Tailwind's namespaces, so `bg-primary`, `text-2xl` and `rounded-lg` just work. |
-| Tailwind v3   | `tailwind.config.ts` | `theme.extend` with colors (including `DEFAULT` and shades), fonts, sizes, spacing and radii.                 |
-| React theme   | `theme.ts`           | A typed `theme` object, plus `themeVars` to spread as CSS variables.                                          |
-| Vue theme     | `theme.ts`           | The same `theme` object, an injection key, `useTheme()` and a plugin that writes CSS variables.               |
-| Android       | `colors.xml`         | Palette, shades and semantic colors as `#AARRGGBB` resources with Android-safe names.                         |
-| JSON tokens   | `tokens.json`        | [W3C Design Tokens (DTCG)](https://tr.designtokens.org/format/) format.                                       |
+| Format        | File                 | Notes                                                                                                            |
+| ------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| CSS variables | `tokens.css`         | `:root` custom properties. Semantic colors reference palette variables with a fallback value.                    |
+| SCSS          | `_tokens.scss`       | Variables plus `$colors`, `$type-scale`, `$spacing` and `$radii` maps.                                           |
+| Less          | `tokens.less`        | `@` variables. Values with functions are escaped (`~"..."`) so Less passes them through unchanged.               |
+| Tailwind v4   | `theme.css`          | A `@theme` block. Names follow Tailwind's namespaces, so `bg-primary`, `text-2xl` and `rounded-lg` just work.    |
+| Tailwind v3   | `tailwind.config.ts` | `theme.extend` with colors (including `DEFAULT` and shades), fonts, sizes, spacing and radii.                    |
+| React theme   | `theme.ts`           | A typed `theme` object, plus `themeVars` to spread as CSS variables.                                             |
+| Vue theme     | `theme.ts`           | The same `theme` object, an injection key, `useTheme()` and a plugin that writes CSS variables.                  |
+| Android       | `colors.xml`         | Palette, shades and semantic colors as `#AARRGGBB` resources with Android-safe names.                            |
+| Flutter       | `theme.dart`         | `Colors`, `Spacing`, `Radius` and `Fonts` constant classes plus a Material 3 `ThemeData` with a text theme.      |
+| SwiftUI       | `Theme.swift`        | `Color` extensions prefixed with the brand (so they never clash with `Color.indigo`), spacing, radius and fonts. |
+| Tokens Studio | `tokens-studio.json` | A "global" set for the Tokens Studio Figma plugin: colors, semantic aliases, spacing, radii and typography.      |
+| JSON tokens   | `tokens.json`        | [W3C Design Tokens (DTCG)](https://tr.designtokens.org/format/) format.                                          |
 
 ## JSON token details
 

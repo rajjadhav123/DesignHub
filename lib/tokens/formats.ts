@@ -3,6 +3,7 @@ import { colorTokens } from "@/lib/color/export";
 import { gradientCss, gradientCssFallback } from "@/lib/color/gradient";
 import { fontStack } from "@/lib/typography/css";
 import { siteConfig } from "@/lib/site";
+import { toFlutterTheme, toSwiftUITheme, toTokensStudio } from "@/lib/tokens/native";
 import { googleFontsCssUrl } from "@/lib/typography/google-fonts";
 import type { ExportFormat } from "@/types/export";
 import type { Oklch } from "@/types/color";
@@ -427,7 +428,16 @@ export function tokenFormats(tokens: DesignTokens): ExportFormat[] {
       code: toStyledTheme(tokens),
     },
     { id: "vue", label: "Vue theme", filename: "theme.ts", language: "ts", code: toVueTheme(tokens) },
+    { id: "flutter", label: "Flutter", filename: "theme.dart", language: "dart", code: toFlutterTheme(tokens) },
+    { id: "swiftui", label: "SwiftUI", filename: "Theme.swift", language: "swift", code: toSwiftUITheme(tokens) },
     { id: "json", label: "JSON tokens", filename: "tokens.json", language: "json", code: toJsonTokens(tokens) },
+    {
+      id: "tokens-studio",
+      label: "Tokens Studio",
+      filename: "tokens-studio.json",
+      language: "json",
+      code: toTokensStudio(tokens),
+    },
   ];
 }
 
