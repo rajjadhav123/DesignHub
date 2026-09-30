@@ -1,4 +1,3 @@
-
 # Frequently Asked Questions
 
 ## Where is my data?
